@@ -1,13 +1,18 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+	"net/http"
+	"rico-ser-gin/routers"
+)
 
 func main() {
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	r.Run() // listen and serve on 0.0.0.0:8080
+	routersInit := routers.InitRouter()
+
+	server := &http.Server{
+		Addr:           fmt.Sprintf(":%d", 9000),
+		Handler:        routersInit,
+	}
+
+	server.ListenAndServe()
 }
